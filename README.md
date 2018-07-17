@@ -1,4 +1,4 @@
-# Leaves API:  
+# Leaves API 
 ### Anant Corporation  
 #### Developed by Ankit Gupta (Apprentice) and Rahul Singh (CEO)  
 **Description:** Given a URL, several processes are executed and returned back as a complete dataset in JSON. This version runs separate REST apis in a Docker container and uses an NGINX proxy to expose end points.  
