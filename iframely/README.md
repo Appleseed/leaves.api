@@ -7,3 +7,6 @@ Run the following:
 docker build -t iframely:latest .
 docker run -it -p 8061:8061 -v $PWD/config.local.js:/iframely/config.local.js --name iframely iframely:latest
 docker stop iframely
+
+NOTE:
+The Package.JSON file, Node Modules, and everything needed are inside the ZIP File. There were so many JS files (not just node modules) that Github could not support the folder. Thus, to view all components, please download the zip file.
