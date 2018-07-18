@@ -13,7 +13,7 @@ Below are the endpoints expressed in the Anant Leaves API with the folders withi
 - /meta/pagerank?url=http://www.example.com/article.html (Page_Rank)
 - /meta/card?url=http://www.example.com/article.html (Card)
 
-- /images/first?url=http://www.example.com/article.html (HTMLtoImage)
-- /images/thumb/large?url=http://www.example.com/article.html (HTMLtoImage)
-- /images/thumb/medium?url=http://www.example.com/article.html (HTMLtoImage)
-- /images/thumb/small?url=http://www.example.com/article.html (HTMLtoImage)
+- /images/first?url=http://www.example.com/article.html (Image)
+- /images/thumb/large?url=http://www.example.com/article.html (Image_Large)
+- /images/thumb/medium?url=http://www.example.com/article.html (Image_Medium)
+- /images/thumb/small?url=http://www.example.com/article.html (Image_Small)
