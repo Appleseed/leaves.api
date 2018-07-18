@@ -11,7 +11,6 @@ Below are the endpoints expressed in the Anant Leaves API with the folders withi
 - /content/text?url=http://www.example.com/article.html (Text)
 
 - /meta/pagerank?url=http://www.example.com/article.html (Page_Rank)
-- /meta/twittercount?url=http://www.example.com/article.html (Twitter_Count)
 - /meta/card?url=http://www.example.com/article.html (Card)
 
 - /images/first?url=http://www.example.com/article.html (HTMLtoImage)
