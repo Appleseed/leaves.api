@@ -1,22 +1,23 @@
 var express = require('express')
-var bodyParser = require("body-parser");
 var app = express()
+
+app.use(function (req, res, next) {
+  console.log('Time:', Date.now())
+  next()
+})
 
 var request = require("request");
 
 var using = "";
 
-var fullUrl = '';
+var fullUrl = 'http://www.example.com/article.html';
+
+var open = require('open');
+
 app.get('/', function(req, res){ //returns URL
   fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
   res.send('ANANT CORPORATION LEAVES API- url: ' + fullUrl + ", ALL METADATA IN CONSOLE.LOG WHEN Index.js is run."); //prints url parameter
 });
-
-var routes = require("./routes.js");
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-
-routes(app);
 
 //Comment the following ONCE fullUrl is not an empty page
 fullUrl = 'http://www.example.com/article.html';
@@ -126,6 +127,7 @@ read(fullUrl, function(err, article, meta) {
 
 //Note: Embed.ly account costs money
 
-var server = app.listen(8081, function () {
-  console.log('app listening on port 8081!')
+app.listen(8081, "0.0.0.0", function () {
+  //console.log('app listening on port 8081!')
+  console.log('Express server listening on port ' + app.get('host') + ':' + app.get('port'));
 })
