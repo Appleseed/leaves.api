@@ -94,15 +94,26 @@ app.get('/meta/card/:url', (req, res) => { //first
 	});
 });
 
+var webshot = require('webshot');
+app.get('/images/test/:url', (req, res) => { //first
+  var urlpath = 'http://'+req.params.url;
+  webshot(urlpath, '/app/imageout.png', function(err){
+	  res.sendFile('/app/imageout.png');
+  });
+});
+
+
 var wkhtmltoimage = require('wkhtmltoimage');
 const fs = require('fs');
 const resizeImg = require('resize-img');
 
 app.get('/images/first/:url', (req, res) => { //first
   var urlpath = 'http://'+req.params.url;
-  wkhtmltoimage.generate(urlpath, { output: '/app/images/imageout.png' });
+//  var options = {defaultWhiteBackground: true}
+//  wkhtmltoimage.generate(urlpath, { output: '/app/images/imageout.png' });
+  webshot(urlpath, '/app/images/imageout.png', function(err){
   console.log("Image generated in folder: imageout.png")
-  res.sendFile('/app/images/imageout.png');
+  res.sendFile('/app/images/imageout.png')});
 });
 
 app.get('/images/thumb/large/:url', (req, res) => { //first

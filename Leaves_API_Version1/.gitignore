@@ -62,3 +62,8 @@ typings/
 
 # next.js build output
 .next
+
+#images
+./Leaves_API_Version1/images/
+./Leaves_API_Version1/Result/
+./Leaves_API_Version1/Thumbs.db

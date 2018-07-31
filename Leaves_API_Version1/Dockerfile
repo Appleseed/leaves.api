@@ -3,6 +3,7 @@ WORKDIR /app
 COPY package.json /app
 RUN npm install
 RUN npm install open
+RUN npm install webshot
 COPY . /app
 CMD node index.js
 EXPOSE 8081
