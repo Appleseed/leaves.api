@@ -1,133 +1,158 @@
 var express = require('express')
 var app = express()
 
-app.use(function (req, res, next) {
-  console.log('Time:', Date.now())
-  next()
-})
+app.set('port', process.env.PORT || 8081);
+// app.set('host', process.env.HOST || '192.168.99.100');
 
 var request = require("request");
 
 var using = "";
 
-var fullUrl = 'http://www.example.com/article.html';
-
-var open = require('open');
-
+var fullUrl = '';
 app.get('/', function(req, res){ //returns URL
   fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
   res.send('ANANT CORPORATION LEAVES API- url: ' + fullUrl + ", ALL METADATA IN CONSOLE.LOG WHEN Index.js is run."); //prints url parameter
 });
 
-//Comment the following ONCE fullUrl is not an empty page
-fullUrl = 'http://www.example.com/article.html';
-//End Commenting
-console.log("LEAVES API- Version 1")
-console.log('*****************************************************************')
-console.log("URL");
-console.log(fullUrl);
-console.log('*****************************************************************')
 
+var bodytest = '';
+app.get('/content/full/:url', (req, res) => { //first
+  var urlpath = 'http://'+req.params.url;
+  request(urlpath, function(error, response, body) {
+    console.log("FULL HTML")
+    bodytest = body;
+    console.log(body); //Prints out raw/body of the url in js
+    console.log('*****************************************************************')
+	  res.status(200).send({
+		body: bodytest,
+	  })
+	});
+});
 
-request(fullUrl, function(error, response, body) {
-  console.log("RAW/FULL HTML")
-  console.log(body); //Prints out raw/body of the url in js
-  console.log('*****************************************************************')
+app.get('/content/raw/:url', (req, res) => { //first
+  var urlpath = 'http://'+req.params.url;
+  request(urlpath, function(error, response, body) {
+    console.log("RAW HTML")
+    bodytest = body;
+    console.log(body); //Prints out raw/body of the url in js
+    console.log('*****************************************************************')
+	  res.status(200).send(
+		bodytest)
+	});
+});
+
+var read = require('node-readability');
+
+app.get('/content/read/:url', (req, res) => { //first
+  var urlpath = 'http://'+req.params.url;
+  read(urlpath, function(error, article, meta) {
+    console.log("READABLE HTML")
+	text = article.title;
+    text += article.content;
+	text += article.body;
+    console.log(text); //Prints out raw/body of the url in js
+    console.log('*****************************************************************')
+	article.close();
+	res.status(200).send({
+		text})
+	});
+});
+
+app.get('/content/text/:url', (req, res) => { //first
+  var urlpath = 'http://'+req.params.url;
+  var extractor = new BodyExtractor({
+    url: urlpath
+  });
+  extractor.analyze().then(function(text) {
+    textcontent = extractor.title;
+    textcontent += extractor.mainText;
+	console.log(extractor.title);
+	console.log(extractor.mainText);
+	res.status(200).send({
+		textcontent})
+	});
 });
 
 var thistitle = ''; //Stores title for later
 var thisbody = ''; //Stores body for later
 
 var BodyExtractor = require('extract-main-text');
-var extractor = new BodyExtractor({
-    url: fullUrl
+
+app.get('/meta/card/:url', (req, res) => { //first
+  var urlpath = 'http://'+req.params.url;
+  var extractor = new BodyExtractor({
+    url: urlpath
   });
-extractor.analyze().then(function(text) {
-    console.log("TEXT SERVICE")
+  extractor.analyze().then(function(text) {
     thistitle = extractor.title;
     thisbody = extractor.mainText;
-    console.log(extractor.title);
-    console.log(extractor.mainText);
-    console.log('*****************************************************************')
-
-    console.log("EMBED CARD HTML");
     var embedhtmlcode = '<blockquote class="embedly-card"><h4><a href="' + fullUrl +'">' + thistitle + '</a></h4><p>'+ thisbody+'</p></blockquote><script async src="//cdn.embedly.com/widgets/platform.js" charset="UTF-8"></script>';
-    console.log(embedhtmlcode);
-    console.log('*****************************************************************')
+	console.log("EMBED CARD HTML");
+	console.log(embedhtmlcode)
+	res.status(200).send({
+		embedhtmlcode})
+	});
 });
 
-console.log("IMAGE");
-
 var wkhtmltoimage = require('wkhtmltoimage');
-wkhtmltoimage.generate(fullUrl, { output: './images/imageout.png' });
-console.log("Image generated in folder: imageout.png")
-console.log('*****************************************************************')
-
 const fs = require('fs');
 const resizeImg = require('resize-img');
 
-resizeImg(fs.readFileSync('./images/imageout.png'), {width: 2048, height: 898}).then(buf => {
-    fs.writeFileSync('./images/imageout-BIG.png', buf);
+app.get('/images/first/:url', (req, res) => { //first
+  var urlpath = 'http://'+req.params.url;
+  wkhtmltoimage.generate(urlpath, { output: '/app/images/imageout.png' });
+  console.log("Image generated in folder: imageout.png")
+  res.sendFile('/app/images/imageout.png');
+});
+
+app.get('/images/thumb/large/:url', (req, res) => { //first
+  var urlpath = 'http://'+req.params.url;
+  wkhtmltoimage.generate(urlpath, { output: '/app/images/imageout.png' });
+  resizeImg(fs.readFileSync('/app/images/imageout.png'), {width: 2048, height: 898}).then(buf => {
+    fs.writeFileSync('/app/images/imageout-BIG.png', buf);
     console.log("THUMB BIG");
     console.log("Image generated in folder: imageout-BIG.png")
-    console.log('*****************************************************************')
-
+	res.sendFile('/app/images/imageout-BIG.png')});
 });
 
-resizeImg(fs.readFileSync('./images/imageout.png'), {width: 1024, height: 449}).then(buf => {
-    fs.writeFileSync('./images/imageout-MEDIUM.png', buf);
+app.get('/images/thumb/medium/:url', (req, res) => { //first
+  var urlpath = 'http://'+req.params.url;
+  wkhtmltoimage.generate(urlpath, { output: '/app/images/imageout.png' });
+  resizeImg(fs.readFileSync('/app/images/imageout.png'), {width: 1024, height: 449}).then(buf => {
+    fs.writeFileSync('/app/images/imageout-MEDIUM.png', buf);
     console.log("THUMB MEDIUM");
     console.log("Image generated in folder: imageout-MEDIUM.png")
-    console.log('*****************************************************************')
-
+	res.sendFile('/app/images/imageout-MEDIUM.png')});
 });
 
-resizeImg(fs.readFileSync('./images/imageout.png'), {width: 512, height: 224}).then(buf => {
-    fs.writeFileSync('./images/imageout-SMALL.png', buf);
+app.get('/images/thumb/small/:url', (req, res) => { //first
+  var urlpath = 'http://'+req.params.url;
+  wkhtmltoimage.generate(urlpath, { output: '/app/images/imageout.png' });
+  resizeImg(fs.readFileSync('/app/images/imageout.png'), {width: 512, height: 224}).then(buf => {
+    fs.writeFileSync('/app/images/imageout-SMALL.png', buf);
     console.log("THUMB SMALL");
     console.log("Image generated in folder: imageout-SMALL.png")
-    console.log('*****************************************************************')
-
+	res.sendFile('/app/images/imageout-SMALL.png')});
 });
 
 var pagerank = require('google-pagerank');
-
 var rankerpage = 0;
-pagerank(fullUrl, function(err, rank) {
+
+app.get('/meta/pagerank/:url', (req, res) => { //first
+  var urlpath = 'http://'+req.params.url;
+  pagerank(urlpath, function(err, rank) {
   console.log("PAGE RANK");
   console.log('Got pagerank', rank);
   rankerpage = rank;
-  console.log('*****************************************************************')
-
-});
-
-var read = require('node-readability');
-
-read(fullUrl, function(err, article, meta) {
-  // Main Article
-  console.log("READABLE HTML");
-
-  console.log(article.content);
-  // Title
-  console.log(article.title);
-
-  // HTML Source Code
-  console.log(article.html);
-  console.log('*****************************************************************')
-
-  // DOM
-  //console.log(article.document);
-
-  // Response Object from Request Lib
-  //console.log(meta);
-
-  // Close article to clean up jsdom and prevent leaks
-  article.close();
+  res.status(200).send({
+    rank: rankerpage,
+  });
+  });
+  
 });
 
 //Note: Embed.ly account costs money
 
-app.listen(8081, "0.0.0.0", function () {
+app.listen(app.get('port'), '0.0.0.0', function () {
   //console.log('app listening on port 8081!')
-  console.log('Express server listening on port ' + app.get('host') + ':' + app.get('port'));
 })
