@@ -10,9 +10,8 @@ var using = "";
 
 var fullUrl = '';
 app.get('/', function(req, res){ //returns URL
-  res.sendFile('/Users/ankitgupta/Desktop/leaves.api-Dev/Leaves_API_Version1/images/imageout-BIG.png');
   fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
-  //res.send('ANANT CORPORATION LEAVES API- url: ' + fullUrl + ", ALL METADATA IN CONSOLE.LOG WHEN Index.js is run."); //prints url parameter
+  res.send('ANANT CORPORATION LEAVES API- url: ' + fullUrl + ", ALL METADATA IN CONSOLE.LOG WHEN Index.js is run."); //prints url parameter
 });
 
 
@@ -101,39 +100,41 @@ const resizeImg = require('resize-img');
 
 app.get('/images/first/:url', (req, res) => { //first
   var urlpath = 'http://'+req.params.url;
-  wkhtmltoimage.generate(urlpath, { output: '/app/images/imageout.png' });
+  wkhtmltoimage.generate(urlpath, { output: 'images/imageout.png' });
   console.log("Image generated in folder: imageout.png")
-  res.sendFile('/app/images/imageout.png');
+  res.sendFile('/Users/ankitgupta/Desktop/leaves.api-Dev/Leaves_API_Version1/images/imageout.png');
+  res.sendFile('/Users/ankitgupta/Desktop/leaves.api-Dev/Leaves_API_Version1/images/imageout-BIG.png');
+
 });
 
 app.get('/images/thumb/large/:url', (req, res) => { //first
-  var urlpath = 'http://'+req.params.url;
-  wkhtmltoimage.generate(urlpath, { output: '/app/images/imageout.png' });
-  resizeImg(fs.readFileSync('/app/images/imageout.png'), {width: 2048, height: 898}).then(buf => {
-    fs.writeFileSync('/app/images/imageout-BIG.png', buf);
-    console.log("THUMB BIG");
+   var urlpath = 'http://'+req.params.url;
+   wkhtmltoimage.generate(urlpath, { output: '/Users/ankitgupta/Desktop/leaves.api-Dev/Leaves_API_Version1/images/imageout.png' });
+  resizeImg(fs.readFileSync('/Users/ankitgupta/Desktop/leaves.api-Dev/Leaves_API_Version1/images/imageout.png'), {width: 2048, height: 898}).then(buf => {
+    fs.writeFileSync('/Users/ankitgupta/Desktop/leaves.api-Dev/Leaves_API_Version1/images/imageout-BIG.png', buf);
+     console.log("THUMB BIG");
     console.log("Image generated in folder: imageout-BIG.png")
-	res.sendFile('/app/images/imageout-BIG.png')});
+	res.sendFile('/Users/ankitgupta/Desktop/leaves.api-Dev/Leaves_API_Version1/images/imageout-BIG.png')});
 });
 
 app.get('/images/thumb/medium/:url', (req, res) => { //first
   var urlpath = 'http://'+req.params.url;
-  wkhtmltoimage.generate(urlpath, { output: '/app/images/imageout.png' });
-  resizeImg(fs.readFileSync('/app/images/imageout.png'), {width: 1024, height: 449}).then(buf => {
-    fs.writeFileSync('/app/images/imageout-MEDIUM.png', buf);
+  wkhtmltoimage.generate(urlpath, { output: '/Users/ankitgupta/Desktop/leaves.api-Dev/Leaves_API_Version1/images/imageout.png' });
+  resizeImg(fs.readFileSync('/Users/ankitgupta/Desktop/leaves.api-Dev/Leaves_API_Version1/images/imageout.png'), {width: 1024, height: 449}).then(buf => {
+    fs.writeFileSync('/Users/ankitgupta/Desktop/leaves.api-Dev/Leaves_API_Version1/images/imageout-MEDIUM.png', buf);
     console.log("THUMB MEDIUM");
     console.log("Image generated in folder: imageout-MEDIUM.png")
-	res.sendFile('/app/images/imageout-MEDIUM.png')});
+	res.sendFile('/Users/ankitgupta/Desktop/leaves.api-Dev/Leaves_API_Version1/images/imageout-MEDIUM.png')});
 });
 
 app.get('/images/thumb/small/:url', (req, res) => { //first
   var urlpath = 'http://'+req.params.url;
-  wkhtmltoimage.generate(urlpath, { output: '/app/images/imageout.png' });
-  resizeImg(fs.readFileSync('/app/images/imageout.png'), {width: 512, height: 224}).then(buf => {
-    fs.writeFileSync('/app/images/imageout-SMALL.png', buf);
+  wkhtmltoimage.generate(urlpath, { output: '/Users/ankitgupta/Desktop/leaves.api-Dev/Leaves_API_Version1/images/imageout.png' });
+  resizeImg(fs.readFileSync('/Users/ankitgupta/Desktop/leaves.api-Dev/Leaves_API_Version1/images/imageout.png'), {width: 512, height: 224}).then(buf => {
+    fs.writeFileSync('/Users/ankitgupta/Desktop/leaves.api-Dev/Leaves_API_Version1/images/imageout-SMALL.png', buf);
     console.log("THUMB SMALL");
     console.log("Image generated in folder: imageout-SMALL.png")
-	res.sendFile('/app/images/imageout-SMALL.png')});
+	res.sendFile('/Users/ankitgupta/Desktop/leaves.api-Dev/Leaves_API_Version1/images/imageout-SMALL.png')});
 });
 
 var pagerank = require('google-pagerank');
