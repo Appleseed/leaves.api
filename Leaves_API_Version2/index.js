@@ -4,6 +4,11 @@ var app = express()
 app.set('port', process.env.PORT || 8081);
 // app.set('host', process.env.HOST || '192.168.99.100');
 
+
+// Exposes a higher level API which takes a URL and a callback URL as an input. It spawns the component processes to gather data and then once complete it POSTs the data to the call back URL.
+// Endpoints:
+// /content/all/?url=http://www.example.com/article.html&callback=https://another.endpoint/url
+
 var request = require("request");
 
 var using = "";
@@ -15,20 +20,77 @@ app.get('/', function(req, res){ //returns URL
 });
 
 //Currently testing posting the data to a callback URL
-
-var bodytest = '';
-app.get('/content/full/:url', (req, res) => { //first
-  var urlpath = 'http://'+req.params.url;
+var urlpath = '';
+var callbackurl = '';
+var callbackpath = '';
+//Callback Example- Leaves API Version 2
+app.get('/content/all/:url/:callbackurl', (req, res) => { //first
+  urlpath = 'http://'+req.params.url;
+  var oldcallback = req.params.callbackurl;
+  var newcallback = '';
+  for (i = 0; i < oldcallback.length; i++) {
+    if(oldcallback[i]=='.'){
+    newcallback += '/';
+    }
+    else{
+      newcallback +=oldcallback[i];
+    }
+  }
+  callbackurl = 'http://'+newcallback;
+  callbackpath = callbackurl.substring(21,callbackurl.length) + "/";
   request(urlpath, function(error, response, body) {
-    console.log("FULL HTML")
     bodytest = body;
-    console.log(body); //Prints out raw/body of the url in js
-    console.log('*****************************************************************')
 	  res.status(200).send({
-		body: bodytest,
+		url: urlpath,
+    cburl: callbackurl,
+    cbpath: callbackpath,
+    content: "Data gathered by Component Processes",
 	  })
 	});
 });
+//
+//Posts to a callbackurl
+var pathinapp = '/content/callback/';
+app.get(pathinapp, (req, res) => {
+  console.log(callbackpath);
+ res.status(201).send({
+   url: urlpath,
+   cburl: callbackurl,
+   cbpath: callbackpath,
+ })
+});
+
+// app.get('/content/callback/', (req, res) => {
+//  res.status(201).send({
+//    url: urlpath,
+//    cburl: callbackurl,
+//    cbpath: callbackpath,
+//  })
+// });
+
+// app.get(callbackpath, (req, res) => {
+//  res.status(201).send({
+//    url: urlpath,
+//    cburl: callbackurl,
+//    cbpath: callbackpath,
+//  })
+//  console.log(url + " : " + urlpath);
+//  console.log(callbackurlpath + " : " + callbackurl);
+//  console.log(callbackpath + ":" + call)
+// });
+
+// app.get('/content/full/:url', (req, res) => { //first
+//   var urlpath = 'http://'+req.params.url;
+//   request(urlpath, function(error, response, body) {
+//     console.log("FULL HTML")
+//     bodytest = body;
+//     console.log(body); //Prints out raw/body of the url in js
+//     console.log('*****************************************************************')
+// 	  res.status(200).send({
+// 		body: bodytest,
+// 	  })
+// 	});
+// });
 
 // app.get('/content/raw/:url', (req, res) => { //first
 //   var urlpath = 'http://'+req.params.url;
@@ -157,5 +219,5 @@ app.get('/content/full/:url', (req, res) => { //first
 //Note: Embed.ly account costs money
 
 app.listen(app.get('port'), '0.0.0.0', function () {
-  //console.log('app listening on port 8081!')
+  console.log('app listening on port 8081!')
 })
