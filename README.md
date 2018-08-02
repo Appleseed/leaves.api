@@ -5,15 +5,15 @@
 **Endpoints:**
 Below are the endpoints expressed in the Anant Leaves API with the folders within this repository that correspond to each endpoint.  
 
-- /content/full?url=http://www.example.com/article.html (Full_Raw_Data but inside JSON)
-- /content/raw?url=http://www.example.com/article.html (Full_Raw_Data but passed through)
-- /content/read?url=http://www.example.com/article.html (Readable inside JSON)
-- /content/text?url=http://www.example.com/article.html (Text inside JSON)
+- /content/full/example.com (Full_Raw_Data but inside JSON)
+- /content/raw/example.com (Full_Raw_Data but passed through)
+- /content/read/example.com (Readable inside JSON)
+- /content/text/example.com (Text inside JSON)
 
-- /meta/pagerank?url=http://www.example.com/article.html (Page_Rank inside JSON)
-- /meta/card?url=http://www.example.com/article.html (Card HTML inside JSON)
+- /meta/pagerank/example.com (Page_Rank inside JSON)
+- /meta/card/example.com (Card HTML inside JSON)
 
-- /images/first?url=http://www.example.com/article.html (Image contents)
-- /images/thumb/large?url=http://www.example.com/article.html (Image_Large contents)
-- /images/thumb/medium?url=http://www.example.com/article.html (Image_Medium contents)
-- /images/thumb/small?url=http://www.example.com/article.html (Image_Small contents)
+- /images/first/example.com (Image contents)
+- /images/thumb/large/example.com (Image_Large contents)
+- /images/thumb/medium/example.com (Image_Medium contents)
+- /images/thumb/small/example.com (Image_Small contents)
