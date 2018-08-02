@@ -1,5 +1,5 @@
-## Leaves API Version 1  
+## Leaves API Version 2
 **Instructions:**  
-Download the folder Leaves_API_Version1, open terminal, change directory to the folder, unzip the node_modules.zip file, run "node index.js"  
-**Output:**   
-All metadata for each endpoint will be outputted as shown in output.txt in the Java Console. To access the Java Console, run the program in terminal.
+Download the folder Leaves_API_Version2, open terminal, change directory to the folder, run npm install, run "node index.js", open localhost, and test.  
+**Purpose:**   
+Exposes a higher level API which takes a URL and a callback URL as an input. It spawns the component processes to gather data .  and then once complete it POSTs the data to the call back URL.  
