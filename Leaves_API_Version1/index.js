@@ -35,7 +35,7 @@ class LeavesStaticClass {
     static leavesTextCard (url, heading, req_type, res) {
 		var thistitle = ''; //Stores title for later
 		var thisbody = ''; //Stores body for later
-
+		var BodyExtractor = require('extract-main-text');
 		var extractor = new BodyExtractor({
 			url: url
 		  });
