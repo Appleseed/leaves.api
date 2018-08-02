@@ -16,4 +16,6 @@ Below are the endpoints expressed in the Anant Leaves API with the folders withi
 - /images/first/example.com (Image contents)
 - /images/thumb/large/example.com (Image_Large contents)
 - /images/thumb/medium/example.com (Image_Medium contents)
-- /images/thumb/small/example.com (Image_Small contents)
+- /images/thumb/small/example.com (Image_Small contents)  
+- /content/all/example.com/localhost:8081.content.callback  
+
