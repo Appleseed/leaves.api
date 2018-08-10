@@ -75,6 +75,41 @@ class LeavesStaticClass {
 			res.status(200).send({text})
 		});
 	}
-}
+    static leavesPost(url, callback_url, heading, req, res) {
+		var read = require('node-readability');
+		var db = require('./db/db');
 
+		var redis = require('redis');
+		
+		var redisClient = redis.createClient({host : 'redis'});
+		redisClient.on('ready',function() {
+			console.log("Redis is ready");
+			});
+		redisClient.on('error',function() {
+			console.log("Error in Redis");
+			});
+			read(url, function(error, article, meta) {
+			console.log(heading);
+			var redis_key = url + "_" + heading;
+			var text = article.title;
+			text += article.content;
+			text += article.body;
+			console.log(text); //Prints out raw/body of the url in js
+			console.log('*****************************************************************')
+			redisClient.hmset(redis_key,"cburl",req.query.url,"cbpath",req.path,"content",text,function(err,reply){
+			console.log("Error " + err);
+			article.close();
+
+			redisClient.hgetall(redis_key,function(err,reply) {
+			redisClient.quit();
+			return res.status(201).send({
+				success: 'true',
+				message: 'todo added successfully',
+				reply
+				});
+		});
+	});
+	});
+}
+}
 module.exports = LeavesStaticClass;

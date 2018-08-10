@@ -8,4 +8,6 @@ services:
   image: leaves_api
   ports:
     - "8081:8081"
+ redis:
+  image: redis:alpine
 
