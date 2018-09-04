@@ -77,8 +77,6 @@ class LeavesStaticClass {
 	}
     static leavesPost(url, callback_url, heading, req, res) {
 		var read = require('node-readability');
-		var db = require('./db/db');
-
 		var redis = require('redis');
 		
 		var redisClient = redis.createClient({host : 'redis'});
