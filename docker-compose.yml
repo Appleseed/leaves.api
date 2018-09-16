@@ -4,10 +4,12 @@
 #######################################
 version: '2'
 services: 
- leaves_api:
-  image: leaves_api
+ leaves_ui_api:
+  image: leaves_ui_api
+  environment:
+    - LEAVES_API_PORT=5500
   ports:
-    - "8081:8081"
+    - "5500:5500"
  redis:
   image: redis:alpine
 
