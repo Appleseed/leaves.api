@@ -17,7 +17,7 @@ Frontend Development,https://github.com/dypsilon/frontend-dev-bookmarks,"sindres
 queue_name = 'awesome';
 def publishToRedis(title, url, tag):
         r = redis.client.StrictRedis(host='redis')
-        row = title + ',' + url + ',' + tag
+        row = title + ', ' + url + ', ' + tag
         if len(row) != 0:
             print ('Sending ',row)
             r.publish(queue_name, row)

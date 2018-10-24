@@ -1,19 +1,21 @@
 # Written by Jagannath Bilgi <jsbilgi@yahoo.com>
 """
-Creates web service on localhost port 5000 for loading wallabag
-Expects awesome site url and file name without any extensions
+Creates web service on localhost port 5500 for loading wallabag
+Expects title, url and tags
+tags expects comma seperated values
 
-End point of awesomesite url should be readme.md
+title and tags are optional
 
 example
 
-http://192.168.99.100:5500/params?arg1=sindresorhus&arg2=https://raw.githubusercontent.com/sindresorhus/awesome/master/readme.md&arg3="React Native,Salesforce"
+http://192.168.99.100:5500/params?url=https://developer.ibm.com/code/open/centers/codait/&tags=AI Fairness 360,IBM Code Model Asset Exchange&title=Test
 
 """
 
 import os
-from flask import Flask, request
+from flask import Flask, request, jsonify
 import SubmitToQueue
+import json
 
 try:
     leaves_port = os.environ["LEAVES_API_PORT"]
@@ -25,22 +27,24 @@ app = Flask(__name__)
 @app.route('/params')
 def params():
     try:
-        arg1 = request.args['arg1'];
+        title = request.args['title'];
     except:
-        arg1 = '';
+        title = 'dummy';
 
     try:
-        arg2 = request.args['arg2'];
+        url = request.args['url'];
     except:
-        arg2 = '';
+        url = 'dummy';
 
     try:
-        arg3 = request.args['arg3'];
+        tags = request.args['tags'];
     except:
-        arg3 = '';
+        tags = 'dummy';
 
-    SubmitToQueue.publishToRedis(arg1, arg2, arg3)
-    return "Completed"
+    if url == 'dummy' or url.strip() == "" :
+        return jsonify({"Status": "Failed - URL is missing"})
+    SubmitToQueue.publishToRedis(title, url, tags)
+    return jsonify({"Status":"Completed"})
 
 if __name__ == '__main__':
     app.run(debug=True,host='0.0.0.0', port=leaves_port)
