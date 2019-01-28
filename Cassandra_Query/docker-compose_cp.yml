@@ -1,0 +1,14 @@
+#######################################
+#  Appleseed.api.cas.qry
+#  Currently just a test app 
+#######################################
+version: '2'
+services: 
+ leaves_api_cas_qry_cp:
+  image: leaves_api_cas_qry_cp
+  environment:
+    - LEAVES_API_CAS_PORT=6500
+  ports:
+    - "6500:6500"
+
+

@@ -1,0 +1,15 @@
+#######################################
+#  Appleseed.api.cas.qry
+#  Currently just a test app 
+#######################################
+version: '2'
+services: 
+ leaves_api_cas_qry:
+  image: leaves_api_cas_qry
+  environment:
+    - LEAVES_SOLR_URL=https://ss346483-us-east-1-aws.searchstax.com/solr/leaves_anant_stage
+    - LEAVES_API_CAS_PORT=6500
+  ports:
+    - "6500:6500"
+
+
