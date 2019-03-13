@@ -1,0 +1,5 @@
+Flask
+gunicorn
+newspaper3k
+nltk
+flask_cors
