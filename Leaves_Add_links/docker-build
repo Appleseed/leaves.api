@@ -1,2 +1,1 @@
 docker build -t leaves_ui_api .
-docker tag leaves_ui_api jagannathbilgi/leaves_ui_api

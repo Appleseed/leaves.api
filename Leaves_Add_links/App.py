@@ -13,6 +13,7 @@ http://192.168.99.100:5500/params?url=https://developer.ibm.com/code/open/center
 """
 import os
 from flask import Flask, request, jsonify
+from flask_cors import CORS, cross_origin
 import SubmitToQueue
 import json
 import GetTagCount
@@ -22,8 +23,10 @@ except:
     leaves_port = 5500
 
 app = Flask(__name__)
+CORS(app, support_credentials=True)
 
 @app.route('/params')
+@cross_origin(supports_credentials=True)
 def params():
     try:
         title = request.args['title'];
@@ -46,6 +49,7 @@ def params():
     return jsonify({"Status":"Completed"})
 
 @app.route('/gettagcount')
+@cross_origin(supports_credentials=True)
 def getTagCount():
     return (GetTagCount.getTagCount())
 
